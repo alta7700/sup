@@ -1,7 +1,7 @@
 FROM python:3.10.7-slim-bullseye
 
-WORKDIR /code
-COPY requirements.txt /code
+WORKDIR /user/src/app
+COPY ./requirements.txt .
 RUN set -ex; \
     apt-get update; \
     apt-get install -y locales; \
@@ -10,4 +10,5 @@ RUN set -ex; \
     pip install -U pip; \
     pip install --no-cache-dir -r requirements.txt; \
     rm -rf /var/lib/apt/lists/*
-COPY ./ /code
+COPY ./ .
+ENTRYPOINT ['/user/src/app/entrypoint.sh']
