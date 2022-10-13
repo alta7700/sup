@@ -1,0 +1,7 @@
+.idea
+venv
+__pycache__
+static
+logs
+./ReportsDjango/.env
+vk_bot/management/commands/heads_pw

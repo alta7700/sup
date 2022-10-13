@@ -1,0 +1,20 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build_and_pub:
+    runs-on: [ubuntu-latest]
+    env:
+      TOKEN: ${{ secrets.DOCKER_TOKEN }}
+      LOGIN: ${{ secrets.DOCKER_LOGIN }}
+      IMAGE: ${{ secrets.DOCKER_IMAGE }}
+    steps:
+      - name: Login to docker
+        run: echo $TOKEN | docker login -u $LOGIN --password-stdin
+      - uses: actions/checkout@master
+      - name: Build image
+        run: docker build -t $LOGIN/$IMAGE:${GITHUB_REF:11} -f Dockerfile .
+      - name: Push image to docker
+        run: docker push $LOGIN/$IMAGE:${GITHUB_REF:11}

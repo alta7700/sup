@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>1 студент - Все предметы</title>
+</head>
+<body>
+    <div>
+        <h1></h1><a href="{% url 'home' %}"><h3>На главную</h3></a>
+        <h1>1 студент - Все предметы</h1>
+        <form action="{% url 'stud_report' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% if choose_btn %}
+                <button type="submit" name="act" value="choose_stud">Выбрать студента</button>
+            {% else %}
+                <button type="submit" name="act" value="make_report">Готово</button>
+                <button type="submit" name="act" value="change_group">Изменить группу</button>
+            {% endif %}
+        </form>
+        {% if e_msg %}
+            <div><h3>{{ e_msg }}</h3></div>
+        {% endif %}
+    </div>
+</body>
+</html>
