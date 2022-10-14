@@ -14,7 +14,7 @@ jobs:
       - name: Login to docker
         run: echo $TOKEN | docker login -u $LOGIN --password-stdin
       - uses: actions/checkout@master
-      - name: Build image
-        run: docker build -t $LOGIN/$IMAGE:${GITHUB_REF:11} -f Dockerfile .
-      - name: Push image to docker
-        run: docker push $LOGIN/$IMAGE:${GITHUB_REF:11}
+      - name: Build & push image
+        run:
+          MAIN_TAG=$(cat ./version)
+          && docker buildx build --push -t $LOGIN/$IMAGE:$MAIN_TAG -t $LOGIN/$IMAGE:latest .
