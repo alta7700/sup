@@ -15,6 +15,4 @@ jobs:
         run: echo $TOKEN | docker login -u $LOGIN --password-stdin
       - uses: actions/checkout@master
       - name: Build & push image
-        run:
-          MAIN_TAG=$(cat ./version)
-          && docker buildx build --push -t $LOGIN/$IMAGE:$MAIN_TAG -t $LOGIN/$IMAGE:latest .
+        run: docker buildx build --push -t $LOGIN/$IMAGE:$(cat ./version) -t $LOGIN/$IMAGE:latest .
