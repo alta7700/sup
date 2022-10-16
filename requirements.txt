@@ -2,7 +2,6 @@ Django==4.0
 openpyxl==3.0.10
 psycopg2-binary==2.9.4
 python-dotenv
-yadisk==1.2.16
 vk-api==11.9.9
 transliterate==1.10.2
 gunicorn
