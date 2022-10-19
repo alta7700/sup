@@ -144,7 +144,9 @@ def do_kb_act(user_id, payload: str, msg: str):
 
         elif payload_list[0] == 'attendance':
             stud_info = get_user_by_vk_id(user_id)
-            if payload_list[1] == 'category':
+            if not stud_info:
+                var_message(user_id, 'Ты не авторизован', kb_params=before_login_kb)
+            elif payload_list[1] == 'category':
                 if stud_info['is_head_of_head']:
                     return var_message(user_id, '...', kb_params={0: (attendance_complete, ), **attendance_pr_or_lk_kb})
                 var_message(user_id, '...', kb_params=attendance_pr_or_lk_kb)
@@ -163,10 +165,6 @@ def do_kb_act(user_id, payload: str, msg: str):
                             show_attendance_stud_choice_btn(user_id, stud_info, payload)
                         elif payload_list[2].count('-') == 2:
                             show_attendance(user_id, stud_info, payload, is_practical)
-
-                else:
-                    var_message(user_id, 'Ты не авторизован', kb_params=before_login_kb)
-
             elif payload_list[1] == 'complete':
                 if not stud_info['is_head_of_head']:
                     return var_message(user_id, 'Откуда кнопка?')
