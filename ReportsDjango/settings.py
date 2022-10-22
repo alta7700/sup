@@ -12,7 +12,7 @@ if (SETTINGS_DIR / '.env').exists():
 else:
     from os import environ
     env = {**environ}
-    DEBUG = False
+    DEBUG = bool(env["DEBUG"]) if "DEBUG" in env else False  # 1 or 0
 
 
 INSTALLED_APPS = [

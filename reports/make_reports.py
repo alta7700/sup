@@ -944,7 +944,7 @@ def show_attendance_hours_course(faculty_id, course_n, stream_n=None, gr=None, f
 
     def fill_col_with_percent(st_row, subj_col, p_count, n_count):
         wb_sheet.cell(st_row, subj_col).value = n_count
-        percent_n = round(100 * n_count / p_count, 1)
+        percent_n = round(100 * n_count / p_count, 1) if p_count != 0 else 0
         wb_sheet.cell(st_row, subj_col + 1).value = percent_n
         if percent_n > 30:
             wb_sheet.cell(st_row, subj_col + 1).font = red_font
