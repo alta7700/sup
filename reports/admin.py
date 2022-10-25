@@ -46,6 +46,19 @@ class StudentAdmin(admin.ModelAdmin):
             return tuple(['faculty', 'course_n', 'stream_n', 'group_n', 'position_in_group', 'login', 'password',
                          'is_locked', 'is_head_assistant', 'can_add_lecture_url', 'get_lec_urls_automatically'])
 
+    def save_model(self, request, obj: Student, form, change):
+        super(StudentAdmin, self).save_model(request, obj, form, change)
+        on_update = []
+        group_members = Student.objects \
+            .filter(faculty_id=obj.faculty_id, course_n=obj.course_n, group_n=obj.group_n) \
+            .order_by('is_fired', 'surname', 'name', 'f_name')
+        for i, student in enumerate(group_members, start=1):
+            if student.position_in_group != i:
+                student.position_in_group = i
+                on_update.append(student)
+        if on_update:
+            Student.objects.bulk_update(on_update, ['position_in_group'])
+
 
 class SubjectAdmin(admin.ModelAdmin):
     list_display_links = list_display = ('id', 'faculty', 'course_n', 'short_title')
