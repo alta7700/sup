@@ -438,7 +438,7 @@ def last_reports(stud_info):
 
 def send_stud_list(hoh_info: dict[str, Any], stream_n: int = None, group_n: int = None):
     students = Student.objects.\
-        filter(faculty_id=hoh_info['faculty_id'], is_fired=False)\
+        filter(faculty_id=hoh_info['faculty_id'], course_n=hoh_info['course_n'], is_fired=False)\
         .order_by('group_n', 'surname', 'name', 'f_name')
     if stream_n:
         students = students.filter(stream_n=stream_n)
@@ -455,7 +455,7 @@ def send_stud_list(hoh_info: dict[str, Any], stream_n: int = None, group_n: int 
         text += f'\n{group} группа\n'
         for stud in studs_list:
             text += f'{stud}\n'
-        if len(text) > 3000:
+        if len(text) > 2500:
             var_message(hoh_info['vk_id'], text=text)
             text = ''
     var_message(hoh_info['vk_id'], text=text)
