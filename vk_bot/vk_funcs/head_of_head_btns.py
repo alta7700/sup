@@ -1,3 +1,7 @@
+from typing import Any
+from itertools import groupby
+
+from reports.models import Student
 from .config import *
 from .all_buttons import cancel_btn, main_kb_student
 from datetime import datetime, timedelta
@@ -431,3 +435,27 @@ def last_reports(stud_info):
     unauth_heads_msg = f'Неавторизованные старосты:{"".join(unauth_heads_msg)}\n\n' if unauth_heads_msg else ''
     var_message(stud_info['vk_id'], f'{unauth_heads_msg}{last_report_msg}')
 
+
+def send_stud_list(hoh_info: dict[str, Any], stream_n: int = None, group_n: int = None):
+    students = Student.objects.\
+        filter(faculty_id=hoh_info['faculty_id'], is_fired=False)\
+        .order_by('group_n', 'surname', 'name', 'f_name')
+    if stream_n:
+        students = students.filter(stream_n=stream_n)
+    elif group_n:
+        students = students.filter(group_n=group_n)
+    if not students:
+        return var_message(
+            hoh_info['vk_id'],
+            text=f'Не нашёл {f"{stream_n} поток" if stream_n else f"{group_n} группу"} :(',
+        )
+    text = ''
+    grouped_studs = groupby(students, key=lambda s: s.group_n)
+    for group, studs_list in grouped_studs:
+        text += f'\n{group} группа\n'
+        for stud in studs_list:
+            text += f'{stud}\n'
+        if len(text) > 3000:
+            var_message(hoh_info['vk_id'], text=text)
+            text = ''
+    var_message(hoh_info['vk_id'], text=text)

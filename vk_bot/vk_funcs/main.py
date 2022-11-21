@@ -1,3 +1,5 @@
+import re
+
 from .work_with_users import *
 from .load_reports import *
 from .show_attendahce import *
@@ -68,6 +70,22 @@ def message_from_user(message, recursive=False):
             else:
                 kb = main_kb_student
             var_message(user_id, r_msg, kb)
+
+        elif query.startswith('список') and user_info['is_head_of_head']:
+            if query == 'список курса':
+                send_stud_list(user_info)
+            elif re.match(r'^список \d+ поток', query):
+                send_stud_list(user_info, stream_n=int(query.split()[1]))
+            elif re.match(r'^список \d+ групп', query):
+                send_stud_list(user_info, group_n=int(query.split()[1]))
+            else:
+                var_message(
+                    user_id,
+                    'Напиши что-то из этого:\n'
+                    'Cписок курса\n'
+                    'Список 1 потока'
+                    'Список 1 группы'
+                )
 
         elif query == 'выход':
             log_out(user_id)

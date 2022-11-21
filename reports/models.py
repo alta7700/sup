@@ -114,7 +114,7 @@ class PairsSchedule(models.Model):
     subject = models.ForeignKey(Subject, verbose_name='Пара', on_delete=models.PROTECT)
     lecture = models.ForeignKey(LecturesSchedule, verbose_name='Лекция', null=True, on_delete=models.PROTECT, blank=True)
     is_reported = models.BooleanField(verbose_name='Рапорт отправлен')
-    pr_lk_comment = models.URLField(verbose_name='Комментарий')
+    pr_lk_comment = models.URLField(verbose_name='Комментарий', blank=True)
 
     class Meta:
         verbose_name = 'Расписание пар'
