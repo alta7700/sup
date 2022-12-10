@@ -123,4 +123,6 @@ VK_GROUP_OWNER_ID = int(env['VK_GROUP_OWNER_ID'])
 ALLOWED_HOSTS = list_from_env_value('ALLOWED_HOSTS')
 CSRF_TRUSTED_ORIGIN = list_from_env_value('CSRF_TRUSTED_ORIGIN')
 
+CHANGE_REPORT_DAYS = int(env.get('CHANGE_REPORT_DAYS', 365))
+
 del env

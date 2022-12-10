@@ -1,3 +1,4 @@
+from ReportsDjango import settings
 from .config import *
 import locale
 from .all_buttons import *
@@ -483,7 +484,7 @@ def show_subjects_to_change_report(user_id, btn_payload: str, is_practical: bool
             ps.pr_lk_datetime BETWEEN %s AND %s
         GROUP BY s.id, s.short_title
         ORDER BY min_date''',
-        (faculty_id, course_n, group_n, True, is_practical, now_dt-timedelta(days=14), now_dt)
+        (faculty_id, course_n, group_n, True, is_practical, now_dt-timedelta(days=settings.CHANGE_REPORT_DAYS), now_dt)
     )
     subjects = cur.fetchall()
     if subjects:
@@ -534,7 +535,8 @@ def show_subject_dates_to_change_report(user_id, btn_payload: str, is_practical:
             is_practical = %s AND
             pr_lk_datetime BETWEEN %s AND %s
         ORDER BY pr_lk_datetime''',
-        (faculty_id, course_n, group_n, subject_id, True, is_practical, now_dt-timedelta(days=14), now_dt)
+        (faculty_id, course_n, group_n, subject_id, True, is_practical,
+         now_dt-timedelta(days=settings.CHANGE_REPORT_DAYS), now_dt)
     )
     subject_datetimes = cur.fetchall()
     if subject_datetimes:
@@ -596,8 +598,8 @@ def send_report_message_pattern_to_change_raport(user_id, btn_payload):
     )
     pair_info = cur.fetchone()
     pair_datetime = pair_info['pr_lk_datetime'].replace(tzinfo=None)
-    if (datetime.now() - pair_datetime).days > 14:
-        var_message(user_id, 'Прошло больше 2 недель, изменять нельзя')
+    if (datetime.now() - pair_datetime).days > settings.CHANGE_REPORT_DAYS:
+        var_message(user_id, f'Прошло больше {settings.CHANGE_REPORT_DAYS} дней, изменять нельзя')
         return
     cur.execute(
         '''SELECT
@@ -681,8 +683,8 @@ def parse_report_change_message(user_id, msg):
     if not pair_info['is_reported']:
         var_message(user_id, 'Рапорт для этой пары ещё не отправлен')
         return
-    if (datetime.now() - pair_datetime).days > 14:
-        var_message(user_id, 'Прошло больше 2 недель, изменять нельзя')
+    if (datetime.now() - pair_datetime).days > settings.CHANGE_REPORT_DAYS:
+        var_message(user_id, f'Прошло больше {settings.CHANGE_REPORT_DAYS} дней, изменять нельзя')
         return
     cur.execute(
         '''SELECT id, position_in_group as pos, surname FROM reports_student
