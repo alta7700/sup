@@ -51,4 +51,3 @@ def generate(course: int, folder_to_save: Path):
     passwords_file = folder_to_save / f'Пароли старост {course} курс.xlsx'
     wb.save(passwords_file)
     doc_sender(VK_GROUP_OWNER_ID, passwords_file)
-    passwords_file.unlink()  # удаляем
