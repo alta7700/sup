@@ -1,7 +1,5 @@
 from collections.abc import Callable
 from io import BytesIO
-from pathlib import Path
-from typing import Iterator
 
 from yadisk import yadisk
 
@@ -11,7 +9,6 @@ from openpyxl import load_workbook, Workbook
 from datetime import datetime, timedelta
 import random
 import string
-import os
 
 
 # факультеты
