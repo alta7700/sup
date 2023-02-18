@@ -656,12 +656,7 @@ def parse_report_change_message(user_id, msg):
     else:
         var_message(user_id, 'Ничего не меняй в шаблоне, ТОЛЬКО проставь посещаемость')
         return
-    cur.execute(
-        '''SELECT * FROM reports_subject WHERE
-        faculty_id = %s AND course_n = %s AND short_title = %s AND half = %s''',
-        (faculty_id, course_n, msg[1], 1)
-    )
-    subject = cur.fetchone()
+    subject = get_subject_by_title(faculty_id, course_n, settings.CURRENT_HALF, msg[1])
     if not subject:
         var_message(user_id, f'Предмета {msg[1]} нет, ничего не меняй в шаблоне, ТОЛЬКО проставь посещаемость')
         return
