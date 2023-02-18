@@ -3,6 +3,7 @@ from .all_buttons import *
 from .excels_styles import *
 from datetime import datetime, timedelta
 from openpyxl import Workbook
+from ReportsDjango.settings import CURRENT_HALF
 
 
 def lecture_url_add_or_change_payload_processing(user_id, stud_info, payload_par: str):
@@ -204,7 +205,8 @@ def parse_lecture_url_add_or_change_message(user_id, stud_info, msg, add, recurs
 
         if msg[2].startswith('Предмет -'):
             try:
-                subject = get_subject_by_title(faculty_id, course_n, half=1, subject_title=msg[2].split('-')[1].strip())
+                subject = get_subject_by_title(faculty_id, course_n, half=CURRENT_HALF,
+                                               subject_title=msg[2].split('-')[1].strip())
                 if not subject:
                     var_message(user_id, 'Такого предмета нет')
                     return
