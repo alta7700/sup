@@ -506,11 +506,13 @@ def fill_elders_schedule(file_address, excel_only=False):
         wb.save(new_file_address)
 
 
-def fill_by_files_in_dirs(subjects=False, students=False, schedules_e=False, schedules_j=False, **kwargs):
+def fill_by_files_in_dirs(subjects=False, students=False, schedules_e=False, schedules_j=False, folder_suffix='',
+                          **kwargs):
     ya = yadisk.YaDisk(token=settings.YADISK_TOKEN)
+    folder_suffix = f'{folder_suffix}/' if not folder_suffix.endswith('/') else folder_suffix
 
     def fill(folder: str, handler: Callable) -> None:
-        for file in ya.listdir('/СУП excels/' + folder):
+        for file in ya.listdir('/СУП excels/' + folder_suffix + folder):
             resp = requests.get(file.file)
             resp.raise_for_status()
             handler(BytesIO(resp.content))

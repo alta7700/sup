@@ -6,6 +6,7 @@ from .show_attendahce import *
 from .work_outs import *
 from .pr_lk_schedule import *
 from .head_of_head_btns import *
+from .badge import send_badge_if_exists
 
 
 def convert_to_pars(pars: str):
@@ -59,6 +60,9 @@ def message_from_user(message, recursive=False):
                 parse_lecture_url_add_or_change_message(user_id, user_info, msg, add=True, recursive=recursive)
             elif query == 'ссылка изменить':
                 parse_lecture_url_add_or_change_message(user_id, user_info, msg, add=False, recursive=recursive)
+
+        elif query.startswith('бейдж'):
+            send_badge_if_exists(user_id, user_info)
 
         elif query.startswith('stud-'):
             if user_info['login'] != msg.split('\n')[0].strip():
