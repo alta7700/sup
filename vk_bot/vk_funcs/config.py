@@ -1,5 +1,7 @@
 import json
 import zipfile
+from pathlib import Path
+
 import openpyxl.utils.exceptions
 import vk_api
 import requests
@@ -134,7 +136,7 @@ def get_faculty_id_by_title(faculty_title):
 
 def get_curation_id_by_title(faculty_id, course_n, half, subject):
     cur.execute(
-        'SELECT * FROM reports_subjects WHERE faculty_id = %s AND course_n = %s AND half = %s AND short_title = %s',
+        'SELECT * FROM reports_subject WHERE faculty_id = %s AND course_n = %s AND half = %s AND short_title = %s',
         (faculty_id, course_n, half, subject)
     )
     cur_info = cur.fetchall()
@@ -172,8 +174,7 @@ def get_subject_by_pair(pair_info):
         return cur.fetchone()
 
 
-def doc_sender(user_id: int, file_name, text=None, kb_params=None, kb_onetime=None, remove=True):
-
+def upload_doc(user_id: int, file_name: str | Path) -> str:
     upload_url = gr_session.method("docs.getMessagesUploadServer", {
         'peer_id': user_id
     }).get('upload_url')
@@ -181,8 +182,24 @@ def doc_sender(user_id: int, file_name, text=None, kb_params=None, kb_onetime=No
     doc = gr_session.method('docs.save', {
         'file': response.get('file')
     }).get('doc')
-    attach = 'doc{}_{}'.format(doc.get('owner_id'), doc.get('id'))
+    return 'doc{}_{}'.format(doc.get('owner_id'), doc.get('id'))
 
+
+def multi_doc_sender(user_id: int, filenames: list[str | Path, ...], text, kb_params=None, kb_onetime=None, remove=True):
+    attachments = []
+    for file_name in filenames:
+        if len(attachments) == 10:
+            var_message(user_id, text=text, kb_params=kb_params, kb_onetime=kb_onetime, attach_list=attachments)
+            attachments = []
+        attachments.append(upload_doc(user_id=user_id, file_name=file_name))
+    var_message(user_id, text=text, kb_params=kb_params, kb_onetime=kb_onetime, attach_list=attachments)
+    if remove:
+        for file_name in filenames:
+            os.remove(file_name)
+
+
+def doc_sender(user_id: int, file_name, text=None, kb_params=None, kb_onetime=None, remove=True) -> None:
+    attach = upload_doc(user_id=user_id, file_name=file_name)
     var_message(user_id, text=text, kb_params=kb_params, kb_onetime=kb_onetime, attach_list=[attach, ])
     if remove:
         os.remove(file_name)

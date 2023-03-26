@@ -2,7 +2,7 @@ from .config import *
 from .all_buttons import *
 from .excels_styles import *
 from openpyxl import Workbook
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 
 def show_all_group_reports(user_id, stud_info):

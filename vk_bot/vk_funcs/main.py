@@ -6,7 +6,7 @@ from .show_attendahce import *
 from .work_outs import *
 from .pr_lk_schedule import *
 from .head_of_head_btns import *
-from .badge import send_badge_if_exists
+from .badge import *
 
 
 def convert_to_pars(pars: str):
@@ -26,7 +26,7 @@ def convert_to_pars(pars: str):
 
 def message_from_user(message, recursive=False):
     user_id = message['from_id']
-    msg = message['text']
+    msg: str = message['text']
     query = msg.split('\n')[0].lower().strip()
     user_info = get_user_by_vk_id(user_id)
     if user_info:
@@ -62,7 +62,16 @@ def message_from_user(message, recursive=False):
                 parse_lecture_url_add_or_change_message(user_id, user_info, msg, add=False, recursive=recursive)
 
         elif query.startswith('бейдж'):
-            send_badge_if_exists(user_id, user_info)
+            if user_info['is_head'] and query.startswith('бейджи'):
+                try:
+                    # positions = list(int(x) for x in query.split()[1:] if x)
+                    send_group_badges(user_id, user_info, query.split()[1:])
+                except ValueError:
+                    var_message(user_id, text='Напиши бейджи и напиши позиции студентов в списке без запятых'
+                                              'и других знаков.\n'
+                                              'Например: Бейджи 1 2 3')
+            else:
+                send_badge_if_exists(user_id, user_info)
 
         elif query.startswith('stud-'):
             if user_info['login'] != msg.split('\n')[0].strip():
