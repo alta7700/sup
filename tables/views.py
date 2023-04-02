@@ -55,6 +55,11 @@ class ShowTable(LoginRequiredMixin, DetailView):
     context_object_name = 'table'
     template_name = 'tables/show.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.object.title
+        return context
+
     def get_queryset(self):
         return self.queryset.filter(owner_id=self.request.user.id)
 
@@ -69,28 +74,40 @@ class UpdateTable(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('tables_show', args=(self.object.id,))
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.object.title
+        return context
+
     def get_queryset(self):
         return self.queryset.filter(owner_id=self.request.user.id)
 
 
 class FillTable(UpdateView):
     model = TablePart
+    object: TablePart
     queryset = TablePart.objects.select_related('document').all()
     form_class = FillTableForm
     context_object_name = 'part'
     template_name = 'tables/fill.html'
 
     def get_form_kwargs(self):
-        print(self.object, id(self))
         return super().get_form_kwargs()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.object.document.title
+        return context
+
     def get_success_url(self):
-        print(self.object, id(self))
         return reverse('tables_fill_success', args=(self.object.id,))
 
 
 def fill_success(request, pk):
-    return render(request, 'tables/fill_success.html', context={"object_id": pk})
+    return render(request, 'tables/fill_success.html', context={
+        "object_id": pk,
+        "title": 'Таблица заполнена'
+    })
 
 
 class ExportExcelView(LoginRequiredMixin, DetailView):
