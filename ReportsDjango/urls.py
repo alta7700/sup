@@ -24,4 +24,5 @@ urlpatterns = [
     path('admin_panel/', admin.site.urls),
     path('callback/', include('vk_bot.urls')),
     path('', include('reports.urls')),
+    path('tables/', include('tables.urls')),
 ]

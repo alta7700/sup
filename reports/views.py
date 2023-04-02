@@ -13,14 +13,7 @@ report_types = [
 ]
 
 
-def str_to_list_int(int_s: str, splitter=','):
-    try:
-        return sorted([int(x) for x in int_s.split(splitter)])
-    except ValueError:
-        return None
-
-
-def index1(request):
+def index(request):
     user = request.user
     faculty, courses_n = None, None
     if not user.is_authenticated:
@@ -30,33 +23,14 @@ def index1(request):
             if user.deansuser.faculty:
                 faculty = user.deansuser.faculty.title.title()
                 if user.deansuser.courses_n:
-                    courses_n = str_to_list_int(user.deansuser.courses_n)
+                    courses_n = user.deansuser.courses
                     if courses_n:
                         courses_n = ', '.join(str(x) for x in courses_n)
 
         else:
             return HttpResponse('Недостаточно прав')
-    # if faculty_id:
-    #     if courses_n:
-    #         all_studs = Student.objects.filter(faculty_id=faculty_id, course_n__in=courses_n)
-    #     else:
-    #         all_studs = Student.objects.filter(faculty_id=faculty_id)
-    # else:
-    #     all_studs = Student.objects.all()
-    # all_studs.order_by('faculty_id', 'course_n', 'group_n', 'position_in_group').select_related()
-    # studs_by_groups = {}
-    # for x in all_studs:
-    #     if not studs_by_groups.get(x.faculty.short_title):
-    #         studs_by_groups[x.faculty.short_title] = {}
-    #     if not studs_by_groups[x.faculty.short_title].get(x.course_n):
-    #         studs_by_groups[x.faculty.short_title][x.course_n] = {}
-    #     if not studs_by_groups[x.faculty.short_title][x.course_n].get(x.group_n):
-    #         studs_by_groups[x.faculty.short_title][x.course_n][x.group_n] = []
-    #     studs_by_groups[x.faculty.short_title][x.course_n][x.group_n].append(
-    #         f'{x.position_in_group}. {x.surname} {x.name} {"_______" if x.is_head else ""}'
-    #     )
 
-    return render(request, 'reports/index1.html', {'f': faculty, 'c': courses_n, 'report_types': report_types})
+    return render(request, 'reports/index.html', {'f': faculty, 'c': courses_n, 'report_types': report_types})
 
 
 def stud_subj_report(request):
@@ -69,7 +43,7 @@ def stud_subj_report(request):
             if user.deansuser.faculty:
                 faculty = user.deansuser.faculty.id
                 if user.deansuser.courses_n:
-                    courses_n = str_to_list_int(user.deansuser.courses_n)
+                    courses_n = user.deansuser.courses
         else:
             return HttpResponse('Недостаточно прав')
     choose_btn = True
@@ -122,7 +96,7 @@ def stud_report(request):
             if user.deansuser.faculty:
                 faculty = user.deansuser.faculty.id
                 if user.deansuser.courses_n:
-                    courses_n = str_to_list_int(user.deansuser.courses_n)
+                    courses_n = user.deansuser.courses
         else:
             return HttpResponse('Недостаточно прав')
     choose_btn = True
@@ -180,7 +154,7 @@ def subj_report(request):
             if user.deansuser.faculty:
                 faculty = user.deansuser.faculty.id
                 if user.deansuser.courses_n:
-                    courses_n = str_to_list_int(user.deansuser.courses_n)
+                    courses_n = user.deansuser.courses
         else:
             return HttpResponse('Недостаточно прав')
 
@@ -249,7 +223,7 @@ def all_subj_report(request):
             if user.deansuser.faculty:
                 faculty = user.deansuser.faculty.id
                 if user.deansuser.courses_n:
-                    courses_n = str_to_list_int(user.deansuser.courses_n)
+                    courses_n = user.deansuser.courses
         else:
             return HttpResponse('Недостаточно прав')
 
@@ -303,7 +277,7 @@ def all_subj_hours_report(request):
             if user.deansuser.faculty:
                 faculty = user.deansuser.faculty.id
                 if user.deansuser.courses_n:
-                    courses_n = str_to_list_int(user.deansuser.courses_n)
+                    courses_n = user.deansuser.courses
         else:
             return HttpResponse('Недостаточно прав')
 

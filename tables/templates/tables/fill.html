@@ -1,0 +1,40 @@
+{% extends 'tables/base.html' %}
+{% load custom_tags %}
+
+{% block content %}
+    <div class="card-container">
+        <div>Название: {{ part.document.title }}</div>
+        <div>Описание: {{ part.document.description }}</div>
+        <div>Группа: {{ part.group_n }}</div>
+        <form method="post" novalidate class="card">
+            {% csrf_token %}
+            <div class="actions">
+                <input type="submit" value="Сохранить" class="btn btn-primary"/>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ФИО</th>
+                        {% for field in part.document.fields %}
+                            <th>{{ field.name }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in part.data %}
+                        <tr>
+                            <td>{{ row|get_item:"fio" }}</td>
+                            {% for field in part.document.fields %}
+                                {% with field_id="field_"|concat:forloop.parentloop.counter0|concat:"_"|concat:field.alias %}
+                                {% with formfield=form|getitem:field_id %}
+                                    <td>{{ formfield }}{{ formfield.errors }}</td>
+                                {% endwith %}
+                                {% endwith %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>
+{% endblock %}

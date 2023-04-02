@@ -1,0 +1,9 @@
+{% extends 'tables/base.html' %}
+{% block content %}
+    <h2>Изменения удачно сохранены</h2>
+    <a href="{% url 'tables_fill' object_id %}" class="btn btn-primary">
+        <div>
+            Ой, хочу вернуться
+        </div>
+    </a>
+{% endblock %}

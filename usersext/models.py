@@ -12,3 +12,10 @@ class DeansUser(models.Model):
         verbose_name = 'Дополнение Декан'
         verbose_name_plural = 'Дополнения Деканы'
         ordering = ['faculty', 'courses_n']
+
+    @property
+    def courses(self):
+        try:
+            return sorted([int(x) for x in self.courses_n.split(',')])
+        except ValueError:
+            return None

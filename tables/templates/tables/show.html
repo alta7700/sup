@@ -1,0 +1,59 @@
+{% extends 'tables/base.html' %}
+{% load custom_tags %}
+
+{% block content %}
+    <div class="card-container">
+        <h1>Название: {{ table.title }}</h1>
+        <h2>Описание: {{ table.description }}</h2>
+        <p>Создано: {{ table.created_at }}</p>
+        <div class="actions">
+            <a href="{% url 'tables_edit' table.id %}">
+                <div class="btn btn-primary">
+                    <p>Редактировать</p>
+                </div>
+            </a>
+            <a href="{% url 'tables_export' table.id %}">
+                <div class="btn btn-primary">
+                    <p>Экспортировать</p>
+                </div>
+            </a>
+            <a href="{% url 'tables_notify' table.id %}">
+                <div class="btn btn-primary">
+                    <p>Оповестить</p>
+                </div>
+            </a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Группа</th>
+                    <th>ФИО</th>
+                    {% for field in table.fields %}
+                        <th>{{ field.name }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for part in table.parts.all %}
+                    {% for row in part.data %}
+                        <tr>
+                            <td>{{ part.group_n }}</td>
+                            <td>{{ row|get_item:"fio" }}</td>
+                        {% for field in table.fields %}
+                            <td>{{ row|get_item:field.alias|default_if_none:"" }}</td>
+                        {% endfor %}
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+        <div>
+            <h2>Ссылки для заполнения</h2>
+            <ul>
+                {% for part in table.parts.all %}
+                    <li><a href="{% url 'tables_fill' part.id %}">{{ part.group_n }} группа</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

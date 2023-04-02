@@ -1,0 +1,19 @@
+{% extends 'tables/base.html' %}
+{% block content %}
+    <div class="list-container">
+        <div class="actions list-actions">
+            <a href="{% url 'tables_create' %}">
+                <div class="btn btn-primary">
+                    <p>Создать</p>
+                </div>
+            </a>
+        </div>
+        <div class="list">
+            {% for table in tables %}
+                <div>
+                    <a href="{% url 'tables_show' table.id %}">{{ table.title }} - {{ table.created_at }}</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

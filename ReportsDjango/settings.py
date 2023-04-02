@@ -19,6 +19,10 @@ INSTALLED_APPS = [
     'vk_bot.apps.VkBotConfig',
     'reports.apps.ReportsConfig',
     'usersext.apps.UsersextConfig',
+    'tables.apps.TablesConfig',
+
+    'django_json_widget',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,9 +46,7 @@ ROOT_URLCONF = 'ReportsDjango.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            BASE_DIR / 'reports' / 'templates',
-        ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -53,6 +55,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'custom_tags': 'tables.custom_tags'
+            }
         },
     },
 ]
@@ -78,17 +83,19 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-RU'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
-USE_TZ = False
+USE_TZ = True
 
 STATIC_ROOT = BASE_DIR / 'static'
 
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = '/admin_panel/login/'
 
 
 def list_from_env_value(name: str, required=False):
@@ -124,6 +131,8 @@ CURRENT_HALF = env.get('CURRENT_HALF', 2)
 ALLOWED_HOSTS = list_from_env_value('ALLOWED_HOSTS')
 CSRF_TRUSTED_ORIGINS = list_from_env_value('CSRF_TRUSTED_ORIGINS')
 YADISK_TOKEN = env['YADISK_TOKEN']
+
+SITE_HOST = env.get('SITE_HOST', 'https://рапорички.online')
 
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
