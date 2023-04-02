@@ -30,11 +30,13 @@ class TablesListView(LoginRequiredMixin, ListView):
 class NewTable(LoginRequiredMixin, FormView):
     form_class = CreateTableForm
     template_name = 'tables/create.html'
-    success_url = reverse_lazy('tables')
     extra_context = {'title': 'Новая таблица'}
 
+    def get_success_url(self):
+        return reverse_lazy('tables_show', args=(self.object.id,))
+
     def form_valid(self, form):
-        form.save()
+        self.object = form.save()
         return super().form_valid(form)
 
     def get_form(self, form_class=None):
