@@ -13,7 +13,6 @@ class Command(BaseCommand):
             truncate_db()
         if options.get('all'):
             options.update({par: True for par in self.params})
-        print(options)
         fill_by_files_in_dirs(**options)
 
     def add_arguments(self, parser):
@@ -24,7 +23,7 @@ class Command(BaseCommand):
             '--truncate', action='store_true'
         )
         parser.add_argument(
-            '-f', '--folder_suffix'
+            '-f', '--folder_suffix', default=''
         )
         for par in self.params:
             parser.add_argument(

@@ -509,7 +509,7 @@ def fill_elders_schedule(file_address, excel_only=False):
 def fill_by_files_in_dirs(subjects=False, students=False, schedules_e=False, schedules_j=False, folder_suffix='',
                           **kwargs):
     ya = yadisk.YaDisk(token=settings.YADISK_TOKEN)
-    folder_suffix = f'{folder_suffix}/' if not folder_suffix.endswith('/') else folder_suffix
+    folder_suffix = f'{folder_suffix}/' if folder_suffix and not folder_suffix.endswith('/') else folder_suffix
 
     def fill(folder: str, handler: Callable) -> None:
         for file in ya.listdir('/СУП excels/' + folder_suffix + folder):
@@ -546,8 +546,9 @@ def truncate_db():
 
 def get_holidays():
     return [
-        datetime.strptime('23.02.2023', '%d.%m.%Y').date(),
-        datetime.strptime('8.03.2023', '%d.%m.%Y').date(),
-        datetime.strptime('1.05.2023', '%d.%m.%Y').date(),
-        datetime.strptime('9.05.2023', '%d.%m.%Y').date(),
+        datetime.strptime('1.01.2024', '%d.%m.%Y').date(),
+        datetime.strptime('2.01.2024', '%d.%m.%Y').date(),
+        datetime.strptime('3.01.2024', '%d.%m.%Y').date(),
+        datetime.strptime('4.01.2024', '%d.%m.%Y').date(),
+        datetime.strptime('5.01.2024', '%d.%m.%Y').date(),
     ]
