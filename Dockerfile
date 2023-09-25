@@ -1,6 +1,6 @@
 FROM python:3.10.7-slim-bullseye
 
-WORKDIR /usr/src/app
+WORKDIR /app
 COPY requirements.txt ./
 RUN set -ex; \
     apt-get update; \
@@ -11,4 +11,4 @@ RUN set -ex; \
     pip install --no-cache-dir -r requirements.txt; \
     rm -rf /var/lib/apt/lists/*
 COPY . .
-ENTRYPOINT /usr/src/app/docker-entrypoint.sh
+ENTRYPOINT /app/docker-entrypoint.sh

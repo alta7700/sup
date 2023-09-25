@@ -3,6 +3,4 @@ venv
 __pycache__
 logs
 .env
-ReportsDjango/.env
-vk_bot/management/commands/heads_pw
 /badges
