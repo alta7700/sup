@@ -568,7 +568,7 @@ def show_subject_dates_to_change_report(user_id, btn_payload: str, is_practical:
         else:
             var_message(user_id, 'Что-то не так, не могу найти этот предмет\nПопробуй выйти в начало и нажми все те же '
                                  'кнопки заново\nЕсли не получится, обратись к [id39398636|Саше]')
-        var_message(672645458, f'ID предмета - {subject_id}\nvk_id - {user_id}\npayload - {btn_payload}')
+        var_message(VK_GROUP_OWNER_ID, f'ID предмета - {subject_id}\nvk_id - {user_id}\npayload - {btn_payload}')
 
 
 def send_report_message_pattern_to_change_raport(user_id, btn_payload):

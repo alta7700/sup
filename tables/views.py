@@ -163,5 +163,5 @@ class NotifyView(ShowTable):
 
     def table_message(self, part_uuid: UUID) -> str:
         return f'Нужно заполнить таблицу: {self.object.title}\n' \
-               f'{settings.SITE_HOST}{reverse("tables_fill", args=(part_uuid,))}\n' \
+               f'{self.request.get_host()}{reverse("tables_fill", args=(part_uuid,))}\n' \
                f'{self.object.description}'

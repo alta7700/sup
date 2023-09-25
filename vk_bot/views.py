@@ -2,7 +2,8 @@ import json
 import traceback
 from .vk_funcs.config import var_message, seq_separator
 from django.http import HttpResponse
-from ReportsDjango.settings import VK_CALLBACK_SECRET_KEY, VK_CALLBACK_CONFIRMATION_CODE, VK_INT_GROUP_ID, VK_STR_GROUP_ID
+from ReportsDjango.settings import VK_CALLBACK_SECRET_KEY, VK_CALLBACK_CONFIRMATION_CODE, VK_INT_GROUP_ID,\
+    VK_GROUP_OWNER_ID
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime, timedelta
 
@@ -27,7 +28,7 @@ def bot_event(request):
                         error_info = f'Ошибка от {message["from_id"]}\n{message.get("payload")}'
                         e_msg = f'{error_info}\n{datetime.now().strftime("%Y-%m-%d--%H:%M:%S")}\n{line}\n{tb_text}'
                         for p in seq_separator(e_msg, 3000):
-                            var_message(672645458, p)
+                            var_message(VK_GROUP_OWNER_ID, p)
             elif data['type'] == 'confirmation':
                 return HttpResponse(VK_CALLBACK_CONFIRMATION_CODE, content_type="text/plain", status=200)
     return HttpResponse('ok', content_type="text/plain", status=200)
