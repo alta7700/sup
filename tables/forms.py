@@ -27,8 +27,9 @@ class FillTableForm(forms.Form):
     def save(self):
         data = self.instance.data
         for field_id, value in self.cleaned_data.items():
-            _, index, alias = field_id.split('_')
-            data[int(index)][alias] = value
+            if isinstance(field_id, str) and field_id.startswith('field_'):
+                _, index, alias = field_id.split('_')
+                data[int(index)][alias] = value
         self.instance.save(update_fields=['data'])
         return self.instance
 
