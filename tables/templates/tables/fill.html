@@ -3,9 +3,9 @@
 
 {% block content %}
     <div class="card-container">
-        <div>Название: {{ part.document.title }}</div>
-        <div>Описание: {{ part.document.description }}</div>
-        <div>Группа: {{ part.group_n }}</div>
+        <h3>Название: {{ part.document.title }}</h3>
+        <p>Описание: {{ part.document.description|linebreaksbr }}</p>
+        <p>Группа: {{ part.group_n }}</p>
         <form method="post" novalidate class="card">
             {% csrf_token %}
             <div class="actions">
