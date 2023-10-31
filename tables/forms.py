@@ -18,7 +18,7 @@ class FillTableForm(forms.Form):
         self.instance = instance
         for i, row in enumerate(instance.data):
             for field in instance.document.fields:
-                self.fields[f'field_{i}_{field["alias"]}'] = get_field(field, row)
+                self.fields[f'field__{i}__{field["alias"]}'] = get_field(field, row)
 
     def get_context(self):
         context = super().get_context()
@@ -27,9 +27,8 @@ class FillTableForm(forms.Form):
     def save(self):
         data = self.instance.data
         for field_id, value in self.cleaned_data.items():
-            if isinstance(field_id, str) and field_id.startswith('field_'):
-                _, index, alias = field_id.split('_')
-                data[int(index)][alias] = value
+            _, index, alias = field_id.split('__')
+            data[int(index)][alias] = value
         self.instance.save(update_fields=['data'])
         return self.instance
 
