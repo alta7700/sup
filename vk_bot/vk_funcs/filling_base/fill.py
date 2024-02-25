@@ -546,9 +546,8 @@ def truncate_db():
 
 def get_holidays():
     return [
-        datetime.strptime('1.01.2024', '%d.%m.%Y').date(),
-        datetime.strptime('2.01.2024', '%d.%m.%Y').date(),
-        datetime.strptime('3.01.2024', '%d.%m.%Y').date(),
-        datetime.strptime('4.01.2024', '%d.%m.%Y').date(),
-        datetime.strptime('5.01.2024', '%d.%m.%Y').date(),
+        datetime.strptime('23.02.2024', '%d.%m.%Y').date(),
+        datetime.strptime('8.03.2024', '%d.%m.%Y').date(),
+        datetime.strptime('1.05.2024', '%d.%m.%Y').date(),
+        datetime.strptime('9.05.2024', '%d.%m.%Y').date(),
     ]
