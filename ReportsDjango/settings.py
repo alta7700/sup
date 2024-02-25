@@ -128,5 +128,3 @@ if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 CHANGE_REPORT_DAYS = int(env.get('CHANGE_REPORT_DAYS', 365))
-
-del env
