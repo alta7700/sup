@@ -1,11 +1,12 @@
+from os import environ as env
 from pathlib import Path
-from dotenv import dotenv_values
+from dotenv import load_dotenv
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = dotenv_values(BASE_DIR / '.env')
-DEBUG = env["DEBUG"].lower() in ('true', '1') if "DEBUG" in env else True  # 1 or 0
+load_dotenv(BASE_DIR / '.env')
+DEBUG = env.get("DEBUG", 'false').lower() in ('true', '1')  # 1 or 0
 
 
 INSTALLED_APPS = [
