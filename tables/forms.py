@@ -124,6 +124,7 @@ fields_map = {
     'datetime': forms.DateTimeField,
     'bool': forms.BooleanField,
     'time': forms.TimeField,
+    'choice': forms.ChoiceField
 }
 FIO_FIELD = {'name': 'ФИО', 'alias': 'fio', 'type': 'str', 'kwargs': {}}
 
@@ -134,6 +135,7 @@ def sanitize_field(field: dict) -> dict:
 
 def get_field(field, row) -> forms.Field:
     t = t if (t := field.get('type')) in fields_map else 'str'
-    kwargs = {'initial': row.get(field['alias']), 'label': field['name'], 'required': False}
+    kwargs = {'initial': row.get(field['alias']), 'label': field['name']}
     kwargs = {**d_kwargs, **kwargs} if isinstance(d_kwargs := field.get('kwargs'), dict) else kwargs
+    kwargs.setdefault('required', False)
     return fields_map[t](**kwargs)
