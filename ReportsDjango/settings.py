@@ -80,7 +80,7 @@ LANGUAGE_CODE = 'ru-RU'
 USE_I18N = True
 
 USE_TZ = True
-TIME_ZONE = 'Europe/Moscow'
+TIME_ZONE = 'UTC'
 
 STATIC_ROOT = BASE_DIR / 'static'
 
